@@ -13,7 +13,13 @@ med_ints = integers(min_value=1, max_value=20)
 
 @composite
 def vals(draw, size, number):
-    pts = draw(lists(number, min_size=size, max_size=size,))
+    pts = draw(
+        lists(
+            number,
+            min_size=size,
+            max_size=size,
+        )
+    )
     return minitorch.tensor(pts)
 
 

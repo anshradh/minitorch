@@ -43,7 +43,11 @@ class TorchTrain:
         return self.model.forward(torch.tensor(X)).detach()
 
     def train(
-        self, data, learning_rate, max_epochs=500, log_fn=default_log_fn,
+        self,
+        data,
+        learning_rate,
+        max_epochs=500,
+        log_fn=default_log_fn,
     ):
         self.model = Network(self.hidden_layers)
         self.max_epochs = max_epochs

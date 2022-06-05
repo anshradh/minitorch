@@ -44,7 +44,7 @@ def tensor_map(fn):
 
     def _map(out, out_shape, out_strides, in_storage, in_shape, in_strides):
         # TODO: Implement for Task 3.1.
-        raise NotImplementedError('Need to implement for Task 3.1')
+        raise NotImplementedError("Need to implement for Task 3.1")
 
     return njit(parallel=True)(_map)
 
@@ -118,7 +118,7 @@ def tensor_zip(fn):
         b_strides,
     ):
         # TODO: Implement for Task 3.1.
-        raise NotImplementedError('Need to implement for Task 3.1')
+        raise NotImplementedError("Need to implement for Task 3.1")
 
     return njit(parallel=True)(_zip)
 
@@ -176,7 +176,7 @@ def tensor_reduce(fn):
 
     def _reduce(out, out_shape, out_strides, a_storage, a_shape, a_strides, reduce_dim):
         # TODO: Implement for Task 3.1.
-        raise NotImplementedError('Need to implement for Task 3.1')
+        raise NotImplementedError("Need to implement for Task 3.1")
 
     return njit(parallel=True)(_reduce)
 
@@ -258,7 +258,7 @@ def tensor_matrix_multiply(
     b_batch_stride = b_strides[0] if b_shape[0] > 1 else 0
 
     # TODO: Implement for Task 3.2.
-    raise NotImplementedError('Need to implement for Task 3.2')
+    raise NotImplementedError("Need to implement for Task 3.2")
 
 
 def matrix_multiply(a, b):

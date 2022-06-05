@@ -25,7 +25,7 @@ def index_to_position(index, strides):
     """
 
     # TODO: Implement for Task 2.1.
-    raise NotImplementedError('Need to implement for Task 2.1')
+    raise NotImplementedError("Need to implement for Task 2.1")
 
 
 def to_index(ordinal, shape, out_index):
@@ -45,7 +45,7 @@ def to_index(ordinal, shape, out_index):
 
     """
     # TODO: Implement for Task 2.1.
-    raise NotImplementedError('Need to implement for Task 2.1')
+    raise NotImplementedError("Need to implement for Task 2.1")
 
 
 def broadcast_index(big_index, big_shape, shape, out_index):
@@ -66,7 +66,7 @@ def broadcast_index(big_index, big_shape, shape, out_index):
         None : Fills in `out_index`.
     """
     # TODO: Implement for Task 2.2.
-    raise NotImplementedError('Need to implement for Task 2.2')
+    raise NotImplementedError("Need to implement for Task 2.2")
 
 
 def shape_broadcast(shape1, shape2):
@@ -84,7 +84,7 @@ def shape_broadcast(shape1, shape2):
         IndexingError : if cannot broadcast
     """
     # TODO: Implement for Task 2.2.
-    raise NotImplementedError('Need to implement for Task 2.2')
+    raise NotImplementedError("Need to implement for Task 2.2")
 
 
 def strides_from_shape(shape):
@@ -192,7 +192,7 @@ class TensorData:
         ), f"Must give a position to each dimension. Shape: {self.shape} Order: {order}"
 
         # TODO: Implement for Task 2.1.
-        raise NotImplementedError('Need to implement for Task 2.1')
+        raise NotImplementedError("Need to implement for Task 2.1")
 
     def to_string(self):
         s = ""

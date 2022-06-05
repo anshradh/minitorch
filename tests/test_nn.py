@@ -28,7 +28,7 @@ def test_avg(t):
 @given(tensors(shape=(2, 3, 4)))
 def test_max(t):
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError('Need to implement for Task 4.4')
+    raise NotImplementedError("Need to implement for Task 4.4")
 
 
 @pytest.mark.task4_4

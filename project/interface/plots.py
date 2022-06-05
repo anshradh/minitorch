@@ -67,7 +67,9 @@ def animate(self, models, names):
         dict(active=0, currentvalue={"prefix": "b="}, pad={"t": 50}, steps=steps)
     ]
 
-    fig = go.Figure(data=background + [points],)
+    fig = go.Figure(
+        data=background + [points],
+    )
     fig.update_layout(sliders=sliders)
 
     fig.update_layout(

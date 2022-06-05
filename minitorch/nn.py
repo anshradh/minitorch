@@ -20,7 +20,7 @@ def tile(input, kernel):
     assert height % kh == 0
     assert width % kw == 0
     # TODO: Implement for Task 4.3.
-    raise NotImplementedError('Need to implement for Task 4.3')
+    raise NotImplementedError("Need to implement for Task 4.3")
 
 
 def avgpool2d(input, kernel):
@@ -36,7 +36,7 @@ def avgpool2d(input, kernel):
     """
     batch, channel, height, width = input.shape
     # TODO: Implement for Task 4.3.
-    raise NotImplementedError('Need to implement for Task 4.3')
+    raise NotImplementedError("Need to implement for Task 4.3")
 
 
 max_reduce = FastOps.reduce(operators.max, -1e9)
@@ -64,13 +64,13 @@ class Max(Function):
     def forward(ctx, input, dim):
         "Forward of max should be max reduction"
         # TODO: Implement for Task 4.4.
-        raise NotImplementedError('Need to implement for Task 4.4')
+        raise NotImplementedError("Need to implement for Task 4.4")
 
     @staticmethod
     def backward(ctx, grad_output):
         "Backward of max should be argmax (see above)"
         # TODO: Implement for Task 4.4.
-        raise NotImplementedError('Need to implement for Task 4.4')
+        raise NotImplementedError("Need to implement for Task 4.4")
 
 
 max = Max.apply
@@ -92,7 +92,7 @@ def softmax(input, dim):
         :class:`Tensor` : softmax tensor
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError('Need to implement for Task 4.4')
+    raise NotImplementedError("Need to implement for Task 4.4")
 
 
 def logsoftmax(input, dim):
@@ -113,7 +113,7 @@ def logsoftmax(input, dim):
         :class:`Tensor` : log of softmax tensor
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError('Need to implement for Task 4.4')
+    raise NotImplementedError("Need to implement for Task 4.4")
 
 
 def maxpool2d(input, kernel):
@@ -129,7 +129,7 @@ def maxpool2d(input, kernel):
     """
     batch, channel, height, width = input.shape
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError('Need to implement for Task 4.4')
+    raise NotImplementedError("Need to implement for Task 4.4")
 
 
 def dropout(input, rate, ignore=False):
@@ -145,4 +145,4 @@ def dropout(input, rate, ignore=False):
         :class:`Tensor` : tensor with randoom positions dropped out
     """
     # TODO: Implement for Task 4.4.
-    raise NotImplementedError('Need to implement for Task 4.4')
+    raise NotImplementedError("Need to implement for Task 4.4")
