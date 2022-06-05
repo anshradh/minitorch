@@ -18,7 +18,7 @@ from minitorch.operators import (
     sum,
 )
 from hypothesis import given
-from hypothesis.strategies import lists
+from hypothesis.strategies import lists, builds
 from .strategies import small_floats, assert_close
 import pytest
 from minitorch import MathTest
@@ -105,7 +105,11 @@ def test_sigmoid(a):
     * it is  strictly increasing.
     """
     # TODO: Implement for Task 0.2.
-    raise NotImplementedError("Need to implement for Task 0.2")
+    assert 0.0 <= sigmoid(a) <= 1.0
+    assert_close(1.0 - sigmoid(a), sigmoid(neg(a)))
+    assert_close(sigmoid(0.0), 0.5)
+    assert sigmoid(0.0 - 1e6) <= 0.5 and 0.5 <= sigmoid(0.0 + 1e06)
+    assert sigmoid(a - 1e-6) <= sigmoid(a) and sigmoid(a) <= sigmoid(a + 1e6)
 
 
 @pytest.mark.task0_2
