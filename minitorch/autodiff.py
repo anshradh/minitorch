@@ -271,10 +271,13 @@ class FunctionBase:
             (see `is_constant` to remove unneeded variables)
 
         """
-        # Tip: Note when implementing this function that
-        # cls.backward may return either a value or a tuple.
-        # TODO: Implement for Task 1.3.
-        raise NotImplementedError("Need to implement for Task 1.3")
+        derivatives = wrap_tuple(cls.backward(ctx, d_output))
+        ret = []
+        for input, derivative in zip(inputs, derivatives):
+            if not is_constant(input):
+                ret.append((input, derivative))
+
+        return ret
 
 
 # Algorithms for backpropagation
