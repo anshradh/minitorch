@@ -1,4 +1,5 @@
 variable_count = 1
+from collections import deque, defaultdict
 
 
 # ## Module 1
@@ -190,8 +191,7 @@ class History:
         Returns:
             list of numbers : a derivative with respect to `inputs`
         """
-        # TODO: Implement for Task 1.4.
-        raise NotImplementedError("Need to implement for Task 1.4")
+        return self.last_fn.chain_rule(self.ctx, self.inputs, d_output)
 
 
 class FunctionBase:
@@ -298,8 +298,22 @@ def topological_sort(variable):
         list of Variables : Non-constant Variables in topological order
                             starting from the right.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    visited = set()
+    top_order = deque([])
+
+    def visit(node):
+        if node.unique_id in visited:
+            return
+        if not node.is_leaf():
+            for neighbor in node.history.inputs:
+                if not is_constant(neighbor):
+                    visit(neighbor)
+            visited.add(node.unique_id)
+        top_order.appendleft(node)
+
+    visit(variable)
+
+    return top_order
 
 
 def backpropagate(variable, deriv):
@@ -315,5 +329,29 @@ def backpropagate(variable, deriv):
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    top_sort = topological_sort(variable)
+    var_deriv_dict = (
+        {}
+    )  # variable_input.unique_id: deriv for variable_input in variable.history.inputs if not is_constant(variable_input)} #assumes no double arrows
+    for var in top_sort:
+        if is_constant(var):
+            continue
+        d_out = (
+            var_deriv_dict[var.unique_id]
+            if var.unique_id != variable.unique_id
+            else deriv
+        )  # should exist
+        if var.is_leaf():
+            var.accumulate_derivative(d_out)
+        else:
+            d_outs = var.history.backprop_step(d_out)
+            inputs = var.history.inputs
+            douts_idx = 0
+            for input in inputs:
+                if is_constant(input):
+                    continue
+                if input.unique_id in var_deriv_dict:
+                    var_deriv_dict[input.unique_id] += d_outs[douts_idx][1]
+                else:
+                    var_deriv_dict[input.unique_id] = d_outs[douts_idx][1]
+                douts_idx += 1
