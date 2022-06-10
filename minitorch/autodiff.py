@@ -308,7 +308,7 @@ def topological_sort(variable):
             for neighbor in node.history.inputs:
                 if not is_constant(neighbor):
                     visit(neighbor)
-            visited.add(node.unique_id)
+        visited.add(node.unique_id)
         top_order.appendleft(node)
 
     visit(variable)
@@ -340,18 +340,18 @@ def backpropagate(variable, deriv):
             var_deriv_dict[var.unique_id]
             if var.unique_id != variable.unique_id
             else deriv
-        )  # should exist
+        )
         if var.is_leaf():
             var.accumulate_derivative(d_out)
         else:
-            d_outs = var.history.backprop_step(d_out)
+            d_outs = [d for _, d in var.history.backprop_step(d_out)]
             inputs = var.history.inputs
             douts_idx = 0
             for input in inputs:
                 if is_constant(input):
                     continue
                 if input.unique_id in var_deriv_dict:
-                    var_deriv_dict[input.unique_id] += d_outs[douts_idx][1]
+                    var_deriv_dict[input.unique_id] += d_outs[douts_idx]
                 else:
-                    var_deriv_dict[input.unique_id] = d_outs[douts_idx][1]
+                    var_deriv_dict[input.unique_id] = d_outs[douts_idx]
                 douts_idx += 1
