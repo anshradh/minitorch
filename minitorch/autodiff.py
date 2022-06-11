@@ -330,8 +330,8 @@ def backpropagate(variable, deriv):
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     top_sort = topological_sort(variable)
-    var_deriv_dict = (
-        {}
+    var_deriv_dict = defaultdict(
+        int
     )  # variable_input.unique_id: deriv for variable_input in variable.history.inputs if not is_constant(variable_input)} #assumes no double arrows
     for var in top_sort:
         if is_constant(var):
@@ -348,10 +348,12 @@ def backpropagate(variable, deriv):
             inputs = var.history.inputs
             douts_idx = 0
             for input in inputs:
-                if is_constant(input):
-                    continue
-                if input.unique_id in var_deriv_dict:
+                print(input)
+                print(douts_idx)
+                print(d_outs)
+                if not is_constant(input):
+                    print("Not constant")
                     var_deriv_dict[input.unique_id] += d_outs[douts_idx]
+                    douts_idx += 1
                 else:
-                    var_deriv_dict[input.unique_id] = d_outs[douts_idx]
-                douts_idx += 1
+                    print("Constant")
