@@ -27,7 +27,10 @@ def central_difference(f, *vals, arg=0, epsilon=1e-6):
     vals_plus[arg] = operators.add(vals_plus[arg], epsilon)
     vals_minus[arg] = operators.add(vals_minus[arg], operators.neg(epsilon))
 
-    return (f(*vals_plus) - f(*vals_minus)) / (2.0 * epsilon)
+    return operators.mul(
+        (operators.add(f(*vals_plus), operators.neg(f(*vals_minus)))),
+        operators.inv(operators.mul(2.0, epsilon)),
+    )
 
 
 # ## Task 1.2 and 1.4
@@ -273,7 +276,6 @@ class LT(ScalarFunction):
 
     @staticmethod
     def forward(ctx, a, b):
-        ctx.save_for_backward(a, b)
         return float(operators.lt(a, b))
 
     @staticmethod
@@ -286,7 +288,6 @@ class EQ(ScalarFunction):
 
     @staticmethod
     def forward(ctx, a, b):
-        ctx.save_for_backward(a, b)
         return float(operators.eq(a, b))
 
     @staticmethod
