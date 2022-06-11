@@ -271,13 +271,15 @@ class FunctionBase:
             (see `is_constant` to remove unneeded variables)
 
         """
-        derivatives = wrap_tuple(cls.backward(ctx, d_output))
-        ret = []
-        for input, derivative in zip(inputs, derivatives):
-            if not is_constant(input):
-                ret.append((input, derivative))
+        output = []
+        for var_i, var in enumerate(inputs):
+            if not is_constant(var):
+                if type(cls.backward(ctx, d_output)) == float:
+                    output.append(tuple((var, cls.backward(ctx, d_output))))
+                else:
+                    output.append(tuple((var, cls.backward(ctx, d_output)[var_i])))
 
-        return ret
+        return output
 
 
 # Algorithms for backpropagation
@@ -348,12 +350,6 @@ def backpropagate(variable, deriv):
             inputs = var.history.inputs
             douts_idx = 0
             for input in inputs:
-                print(input)
-                print(douts_idx)
-                print(d_outs)
                 if not is_constant(input):
-                    print("Not constant")
                     var_deriv_dict[input.unique_id] += d_outs[douts_idx]
                     douts_idx += 1
-                else:
-                    print("Constant")

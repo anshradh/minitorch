@@ -278,8 +278,7 @@ class LT(ScalarFunction):
 
     @staticmethod
     def backward(ctx, d_output):
-        a, b = ctx.saved_values
-        return float(operators.mul(operators.lt(a, b), d_output))
+        return 0.0
 
 
 class EQ(ScalarFunction):
@@ -292,8 +291,7 @@ class EQ(ScalarFunction):
 
     @staticmethod
     def backward(ctx, d_output):
-        a, b = ctx.saved_values
-        return float(operators.mul(operators.eq(a, b), d_output))
+        return 0.0
 
 
 def derivative_check(f, *scalars):
