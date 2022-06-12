@@ -7,7 +7,7 @@ import numpy as np
 # Central Difference calculation
 
 
-def central_difference(f, *vals, arg=0, epsilon=1e-6):
+def central_difference(f, *vals, arg=0, epsilon=1e-8):
     r"""
     Computes an approximation to the derivative of `f` with respect to one arg.
 
@@ -26,6 +26,18 @@ def central_difference(f, *vals, arg=0, epsilon=1e-6):
     vals_minus = list(vals)
     vals_plus[arg] = operators.add(vals_plus[arg], epsilon)
     vals_minus[arg] = operators.add(vals_minus[arg], operators.neg(epsilon))
+    print(vals_plus)
+    print(vals_minus)
+    print(f(*vals_plus))
+    print(f(*vals_minus))
+    print("TUNA: ", f(*vals_plus) - f(*vals_minus))
+
+    print(
+        operators.mul(
+            (operators.add(f(*vals_plus), operators.neg(f(*vals_minus)))),
+            operators.inv(operators.mul(2.0, epsilon)),
+        )
+    )
 
     return operators.mul(
         (operators.add(f(*vals_plus), operators.neg(f(*vals_minus)))),
