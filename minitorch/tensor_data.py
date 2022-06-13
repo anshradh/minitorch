@@ -24,7 +24,7 @@ def index_to_position(index, strides):
     Returns:
         int : position in storage
     """
-    return operators.sum([(operators.mul(i, s)) for i, s in zip(index, strides)])
+    return int(operators.sum([(operators.mul(i, s)) for i, s in zip(index, strides)]))
 
 
 def to_index(ordinal, shape, out_index):
@@ -68,7 +68,7 @@ def broadcast_index(big_index, big_shape, shape, out_index):
     """
     for dim in range(len(shape)):
         big_dim = dim + len(big_shape) - len(shape)
-        out_index[dim] = 0 if shape[dim] == 1 else big_shape[big_dim]
+        out_index[dim] = 0 if shape[dim] == 1 else big_index[big_dim]
 
 
 def shape_broadcast(shape1, shape2):
