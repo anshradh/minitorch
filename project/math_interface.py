@@ -61,6 +61,7 @@ def render_math_sandbox(use_scalar=False, use_tensor=False):
             st.write(fig)
             G = graph_builder.GraphBuilder().run(out)
             G.graph["graph"] = {"rankdir": "LR"}
+            print(G)
             st.graphviz_chart(nx.nx_pydot.to_pydot(G).to_string())
 
     if f_type == "Two Arg":
