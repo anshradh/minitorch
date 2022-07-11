@@ -189,7 +189,7 @@ def make_tensor_backend(tensor_ops, is_cuda=False):
             @staticmethod
             def backward(ctx, grad_output):
                 a, b = ctx.saved_values
-                return grad_output.zeros(a.shape), grad_output.zeros(b.shape)
+                return np.zeros(a.shape), np.zeros(b.shape)
 
         class EQ(Function):
             @staticmethod
@@ -200,7 +200,7 @@ def make_tensor_backend(tensor_ops, is_cuda=False):
             @staticmethod
             def backward(ctx, grad_output):
                 a, b = ctx.saved_values
-                return grad_output.zeros(a.shape), grad_output.zeros(b.shape)
+                return np.zeros(a.shape), np.zeros(b.shape)
 
         class IsClose(Function):
             @staticmethod

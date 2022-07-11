@@ -32,7 +32,6 @@ def neg(x):
 
 def lt(x, y):
     ":math:`f(x) =` 1.0 if x is less than y else 0.0"
-    print("PAPAYA", x, y)
     return 1.0 if x < y else 0.0
 
 

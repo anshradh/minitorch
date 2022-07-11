@@ -1,5 +1,4 @@
 import random
-from . import operators
 from .operators import prod
 from numpy import array, float64, ndarray
 import numba
@@ -24,7 +23,10 @@ def index_to_position(index, strides):
     Returns:
         int : position in storage
     """
-    return int(operators.sum([(operators.mul(i, s)) for i, s in zip(index, strides)]))
+    pos = 0
+    for (idx, stride) in zip(index, strides):
+        pos += idx * stride
+    return pos
 
 
 def to_index(ordinal, shape, out_index):
@@ -40,19 +42,19 @@ def to_index(ordinal, shape, out_index):
         out_index (array): the index corresponding to position.
 
     Returns:
-      None : Fills in `out_index`.
+        None : Fills in `out_index`.
 
     """
+    remain = ordinal + 0
     for i in range(len(shape) - 1, -1, -1):
-        d = ordinal % shape[i]
-        out_index[i] = d
-        ordinal //= shape[i]
+        out_index[i] = remain % shape[i]
+        remain //= shape[i]
 
 
 def broadcast_index(big_index, big_shape, shape, out_index):
     """
-    Convert a `big_index` into `big_shape` to a smaller `out_index`
-    into `shape` following broadcasting rules. In this case
+    Convert a `big_index` in `big_shape` to a smaller `out_index`
+    in `shape` following broadcasting rules. In this case
     it may be larger or with more dimensions than the `shape`
     given. Additional dimensions may need to be mapped to 0 or
     removed.
@@ -66,9 +68,11 @@ def broadcast_index(big_index, big_shape, shape, out_index):
     Returns:
         None : Fills in `out_index`.
     """
-    for dim in range(len(shape)):
-        big_dim = dim + len(big_shape) - len(shape)
-        out_index[dim] = 0 if shape[dim] == 1 else big_index[big_dim]
+    for i, s in enumerate(shape):
+        if s > 1:
+            out_index[i] = big_index[i + (len(big_shape) - len(shape))]
+        else:
+            out_index[i] = 0
 
 
 def shape_broadcast(shape1, shape2):
@@ -85,23 +89,16 @@ def shape_broadcast(shape1, shape2):
     Raises:
         IndexingError : if cannot broadcast
     """
-    l = max(len(shape1), len(shape2))
-    shape1 = [1] * (l - len(shape1)) + list(shape1)
-    shape2 = [1] * (l - len(shape2)) + list(shape2)
-    union_shape = [0] * l
-    for dim in range(l):
-        if shape1[dim] == 1:
-            union_shape[dim] = shape2[dim]
-        elif shape2[dim] == 1:
-            union_shape[dim] = shape1[dim]
-        elif shape1[dim] == shape2[dim]:
-            union_shape[dim] = shape1[dim]
-        else:
+    out_shape = []
+    for s_i in range(1, max(len(shape1), len(shape2)) + 1):
+        s1 = shape1[-s_i] if s_i <= len(shape1) else 0
+        s2 = shape2[-s_i] if s_i <= len(shape2) else 0
+        if (s1 != s2) and (s1 > 1 and s2 > 1):
             raise IndexingError(
-                f"cannot align dimensions of size {shape1[dim]}, {shape2[dim]}"
+                f"Cannot broadcast, because in trailing dimension number {s_i}: {s1} != {s2}"
             )
-
-    return tuple(union_shape)
+        out_shape.append(max(s1, s2))
+    return tuple(reversed(out_shape))
 
 
 def strides_from_shape(shape):
@@ -207,10 +204,9 @@ class TensorData:
         assert list(sorted(order)) == list(
             range(len(self.shape))
         ), f"Must give a position to each dimension. Shape: {self.shape} Order: {order}"
-
-        shape = tuple(self.shape[i] for i in order)
-        strides = tuple(self.strides[i] for i in order)
-
+        arr_order = array(order)
+        shape = tuple(self._shape[arr_order])
+        strides = tuple(self._strides[arr_order])
         return TensorData(self._storage, shape, strides)
 
     def to_string(self):
